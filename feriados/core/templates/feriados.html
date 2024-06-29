@@ -5,6 +5,10 @@
         <title>Feriados</title>
     </head>
     <body>
-        <h1>Não é natal</h1>
+        {% if feriado %}
+            <h1>{{ feriado }}</h1>
+        {% else %}
+            <h1>Hoje não tem feriado</h1>
+        {% endif %}
     </body>
 </html>

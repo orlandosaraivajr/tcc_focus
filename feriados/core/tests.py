@@ -1,6 +1,8 @@
 from django.test import TestCase
+from core.models import FeriadoModel
+from datetime import date
 
-class FeriadoTest(TestCase):
+class NoFeriadoTest(TestCase):
     def setUp(self):
         self.resp = self.client.get('/')
         
@@ -8,11 +10,21 @@ class FeriadoTest(TestCase):
         self.assertEqual(200, self.resp.status_code)
         
     def test_texto(self):
-        self.assertContains(self.resp, 'natal')
+        self.assertContains(self.resp, 'Hoje não tem feriado')
 
+class FeriadoTest(TestCase):
+    def setUp(self):
+        FeriadoModel.objects.create(nome='Feriado aleatório', 
+                                    data=date.today())
+        self.resp = self.client.get('/')
         
-from core.models import FeriadoModel
-from datetime import date
+    def test_200_response(self):
+        self.assertEqual(200, self.resp.status_code)
+        
+    def test_texto(self):
+        self.assertContains(self.resp, 'Feriado aleatório')
+        
+
 
 class FeriadoModelTest(TestCase):
     def setUp(self):
